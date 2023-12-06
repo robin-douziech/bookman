@@ -19,7 +19,7 @@ def logout_view(request) :
 def user_creation(request) :
 
 	form = forms.UserCreationForm()
-	error = {
+	errors = {
 		'errors_nb': 0,
 		'passwords_missmatch': [False, "The two password you entered are different"]
 	}
@@ -40,4 +40,4 @@ def user_creation(request) :
 				return redirect('/')
 
 	errors.pop('errors_nb')
-	return render(request, 'user/creation.html', {'form': form, 'error': errors})
+	return render(request, 'user/creation.html', {'form': form, 'errors': errors})

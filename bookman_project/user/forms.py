@@ -32,4 +32,4 @@ class UserCreationForm(forms.Form) :
 		widget=forms.PasswordInput()
 	)
 
-	email = forms.EmailFiald(label="Email")
+	email = forms.EmailField(label="Email")
