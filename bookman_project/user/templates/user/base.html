@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block extra_headers %}
+	<link rel="stylesheet" type="text/css" href="{% static 'user/base.css' %}">
+	{% block user_extra_headers %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+	{% block user_content %}{% endblock %}
+{% endblock %}
