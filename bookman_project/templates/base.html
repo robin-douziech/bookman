@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html>
+	<head>
+		<title>Book Manager</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+		{% block extra_headers %}{% endblock %}
+		<meta charset="utf-8">
+	</head>
+	<body>
+		{% block content %}{% endblock %}
+	</body>
+</html>
