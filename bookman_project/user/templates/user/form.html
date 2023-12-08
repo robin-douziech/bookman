@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html>
+	<head>
+		<title>Book Manager</title>
+		<link rel="stylesheet" type="text/css" href="{% static 'user/form.css' %}">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8">
+	</head>
+	<body>
+
+		<div class="form">
+			<div class="form__heading">{% block title %}{% endblock %}</div>
+			<div class="form__content">
+				{% block form %}{% endblock %}
+			</div>
+		</div>
+
+	</body>
+</html>
