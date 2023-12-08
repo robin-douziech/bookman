@@ -54,5 +54,14 @@ class UserCreationForm(forms.Form) :
 
 		return self.cleaned_data
 
+class UserSearchForm(forms.Form) :
 
+	search_txt = forms.CharField(
+		label = "Search text",
+		max_length = 50,
+		required = False
+	)
 
+	def __init__(self, request, *args, **kwargs) :
+		super(UserSearchForm, self).__init__(*args, **kwargs)
+		self.fields['search_txt'].initial = request.GET.get('search', '')

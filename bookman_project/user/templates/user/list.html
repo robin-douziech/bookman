@@ -1,0 +1,27 @@
+{% extends 'user/base.html' %}
+
+{% load static %}
+
+{% block user_extra_headers %}
+	<link rel="stylesheet" type="text/css" href="{% static 'user/list.css' %}">
+{% endblock %}
+
+{% block foreground %}
+	<div class="foreground__heading"><h1>User search</h1></div>
+	<div class="foreground__content">
+		<div class="search_bar">
+			<form>
+				{% csrf_token %}
+				{{ form.search_txt }}
+				<input type="submit" value="search">
+			</form>
+		</div>
+		<div class="results">
+			{% for person in results %}
+				<a class="person" href="{% url 'user:details' %}?user={{person.username}}">
+					<p>{{ person.username }}</p>
+				</a>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}
