@@ -40,6 +40,15 @@ class UserCreationForm(forms.Form):
         widget=forms.EmailInput(attrs={'class': 'form-control'})
     )
 
+    def as_p(self):
+        "Returns this form rendered as HTML <p>s."
+        return self._html_output(
+            normal_row='<p%(html_class_attr)s>%(label)s %(field)s%(help_text)s</p>',
+            error_row='<div class="alert alert-danger" role="alert">%s</div>',
+            row_ender='</p>',
+            help_text_html=' <span class="helptext">%s</span>',
+            errors_on_separate_row=True)
+
     def clean(self):
         username = self.cleaned_data['username']
         password1 = self.cleaned_data['password1']
