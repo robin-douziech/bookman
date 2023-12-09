@@ -3,13 +3,17 @@
 {% load static %}
 
 {% block title %}
-	<h1>User creation</h1>
+<h1 style="display: flex; align-self: center;">User creation</h1>
 {% endblock %}
 
 {% block form %}
+
+<div class="container-sm">
 	<form action="" method="post">
 		{% csrf_token %}
 		{{ form.as_p }}
-		<input type="submit" value="Submit">
+		<input type="submit" class="btn btn-primary" value="Submit">
 	</form>
+</div>
+
 {% endblock %}

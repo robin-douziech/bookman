@@ -4,64 +4,69 @@ from django.utils.translation import gettext_lazy as _
 
 from . import models
 
-class LoginForm(forms.Form) :
 
-	username = forms.CharField(
-		label="Username",
-		max_length=50
-	)
+class LoginForm(forms.Form):
 
-	password = forms.CharField(
-		label="Password",
-		max_length=50,
-		widget=forms.PasswordInput()
-	)
+    username = forms.CharField(
+        label="Username",
+        max_length=50
+    )
 
-class UserCreationForm(forms.Form) :
+    password = forms.CharField(
+        label="Password",
+        max_length=50,
+        widget=forms.PasswordInput()
+    )
 
-	username = forms.CharField(
-		label="Username",
-		max_length=50
-	)
 
-	password1 = forms.CharField(
-		label="Password",
-		max_length=50,
-		widget=forms.PasswordInput()
-	)
+class UserCreationForm(forms.Form):
+    username = forms.CharField(
+        label="Username",
+        max_length=50,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    password1 = forms.CharField(
+        label="Password",
+        max_length=50,
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
+    password2 = forms.CharField(
+        label="Confirm password",
+        max_length=50,
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
+    email = forms.EmailField(
+        label="Email",
+        widget=forms.EmailInput(attrs={'class': 'form-control'})
+    )
 
-	password2 = forms.CharField(
-		label="Confirm password",
-		max_length=50,
-		widget=forms.PasswordInput()
-	)
+    def clean(self):
+        username = self.cleaned_data['username']
+        password1 = self.cleaned_data['password1']
+        password2 = self.cleaned_data['password2']
+        email = self.cleaned_data['email']
 
-	email = forms.EmailField(label="Email")
+        for user in models.User.objects.all():
+            if user.username == username:
+                raise ValidationError(_("Username %(username)s already used."), params={
+                                      "username": username})
+            elif user.email == email:
+                raise ValidationError(
+                    _("E-mail %(email)s already used."), params={"email": email})
+        if password1 != password2:
+            raise ValidationError(_("Entered password differ."))
 
-	def clean(self) :
-		username = self.cleaned_data['username']
-		password1 = self.cleaned_data['password1']
-		password2 = self.cleaned_data['password2']
-		email = self.cleaned_data['email']
+        return self.cleaned_data
 
-		for user in models.User.objects.all() :
-			if user.username == username :
-				raise ValidationError(_("Username %(username)s already used."), params={"username": username})
-			elif user.email == email :
-				raise ValidationError(_("E-mail %(email)s already used."), params={"email": email})
-		if password1 != password2 :
-			raise ValidationError(_("Entered password differ."))
 
-		return self.cleaned_data
+class UserSearchForm(forms.Form):
 
-class UserSearchForm(forms.Form) :
+    search_txt = forms.CharField(
+        label="Search text",
+        max_length=50,
+        required=False
+    )
 
-	search_txt = forms.CharField(
-		label = "Search text",
-		max_length = 50,
-		required = False
-	)
-
-	def __init__(self, request, *args, **kwargs) :
-		super(UserSearchForm, self).__init__(*args, **kwargs)
-		self.fields['search_txt'].initial = request.GET.get('search', '')
+    def __init__(self, request, *args, **kwargs):
+        super(UserSearchForm, self).__init__(*args, **kwargs)
+        self.fields['search_txt'].initial = request.GET.get('search', '')
