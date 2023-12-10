@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import EmailValidator
 
 from . import models
 
@@ -47,23 +48,33 @@ class UserCreationForm(forms.Form):
             error_row='<div class="alert alert-danger" role="alert">%s</div>',
             row_ender='</p>',
             help_text_html=' <span class="helptext">%s</span>',
-            errors_on_separate_row=True)
+            errors_on_separate_row=False)
 
     def clean(self):
         username = self.cleaned_data['username']
         password1 = self.cleaned_data['password1']
         password2 = self.cleaned_data['password2']
-        email = self.cleaned_data['email']
+        email = self.cleaned_data.get('email')
+
+        error_messages = []
+        validator = EmailValidator()
+        try:
+            validator(email)
+        except ValidationError:
+            error_messages.append(_("Invalid email address."))
 
         for user in models.User.objects.all():
             if user.username == username:
-                raise ValidationError(_("Username %(username)s already used."), params={
+                error_messages.append(_("Username %(username)s already used.") % {
                                       "username": username})
             elif user.email == email:
-                raise ValidationError(
-                    _("E-mail %(email)s already used."), params={"email": email})
+                error_messages.append(
+                    _("Email %(email)s already used.") % {"email": email})
         if password1 != password2:
-            raise ValidationError(_("Entered password differ."))
+            error_messages.append(_("Entered password differ."))
+
+        if error_messages:
+            raise ValidationError(error_messages)
 
         return self.cleaned_data
 
