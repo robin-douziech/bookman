@@ -2,14 +2,22 @@
 
 {% load static %}
 
+{% block tab_title %}
+- User Creation
+{% endblock tab_title %}
+
 {% block title %}
-	<h1>User creation</h1>
-{% endblock %}
+User Creation
+{% endblock title %}
 
 {% block form %}
-	<form action="" method="post">
-		{% csrf_token %}
-		{{ form.as_p }}
-		<input type="submit" value="Submit">
-	</form>
-{% endblock %}
+
+<div class="container-sm d-flex justify-content-center align-items-center">
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="btn btn-primary" value="Submit">
+    </form>
+</div>
+
+{% endblock form %}
