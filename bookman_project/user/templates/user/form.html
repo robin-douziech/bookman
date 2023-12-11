@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html>
+
+<head>
+    <title>Book Manager{% block tab_title %}{% endblock tab_title %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark" style="margin-bottom: 10px;">
+        <a class="navbar-brand">
+            {% block title %}{% endblock title %}
+        </a>
+    </nav>
+    {% block form %}{% endblock %}
+</body>
+
+</html>

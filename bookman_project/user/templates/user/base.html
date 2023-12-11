@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+<head>
+	<title>Book Manager</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	{% block user_extra_headers %}{% endblock %}
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+</head>
+
+<body>
+	<nav class="navbar navbar-dark bg-dark" style="margin-bottom: 10px;">
+		<a class="navbar-brand">
+			{% block title %} {% endblock title %}
+		</a>
+		{% block navbar_content %} {% endblock navbar_content %}
+	</nav>
+</body>
+{% block body_content %} {% endblock body_content %}
+
+</html>
