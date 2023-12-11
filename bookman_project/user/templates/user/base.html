@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-
 {% load static %}
-
 <html>
 
 <head>
@@ -13,17 +11,13 @@
 </head>
 
 <body>
-
-	<header>
-		{% block header %}{% endblock %}
-	</header>
-
-	<div class="page">
-		<div class="foreground">
-			{% block foreground %}{% endblock %}
-		</div>
-	</div>
-
+	<nav class="navbar navbar-dark bg-dark" style="margin-bottom: 10px;">
+		<a class="navbar-brand">
+			{% block title %} {% endblock title %}
+		</a>
+		{% block navbar_content %} {% endblock navbar_content %}
+	</nav>
 </body>
+{% block body_content %} {% endblock body_content %}
 
 </html>
