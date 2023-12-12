@@ -2,24 +2,18 @@
 
 {% load static %}
 
-{% block book_extra_headers %}
-{% endblock %}
 {% block title %}
 Bookman
 {% endblock title %}
 
-{% block navbar_content %}
-<div class="d-flex justify-content-end">
-	<a href="{% url 'user:login' %}" class="btn btn-outline-light">Login</a>
-</div>
-{% endblock navbar_content %}
-
 {% block body_content %}
-<form action="" method="get" class="d-flex" role="search" style="margin-left: 5px;">
-	{% csrf_token %}
-	{{ form.search_txt }}
-	<input type="submit" value="Search" class="btn btn-outline-success" style="margin-left: 10px;">
-</form>
+<div class="container" style="width: fit-content;">
+	<form action="" method="get" class="d-flex" role="search" style="margin-left: 5px;">
+		{% csrf_token %}
+		{{ form.search_txt }}
+		<input type="submit" value="Search" class="btn btn-outline-success" style="margin-left: 10px;">
+	</form>
+</div>
 <div class="row" style="margin: 15px;">
 	{% for book in results %}
 	<div class="col-sm-4" style="width: fit-content; height: fit-content;">

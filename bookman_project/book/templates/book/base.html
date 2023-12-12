@@ -7,6 +7,9 @@
 <head>
 	<title>Book Manager {% block tab_title %}{% endblock %}</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+		integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
 	{% block user_extra_headers %}{% endblock %}
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="utf-8">
@@ -14,12 +17,25 @@
 
 <body>
 	<nav class="navbar navbar-dark bg-dark" style="margin-bottom: 10px;">
-		<a class="navbar-brand" href="/">
+		<a class="navbar-brand" href="">
 			<img src="{% static 'book/img/bookman.png' %}" width="30" height="30" class="d-inline-block align-top"
 				alt="">
 			{% block title %} {% endblock title %}
 		</a>
-		{% block navbar_content %} {% endblock navbar_content %}
+		{% if user.is_authenticated %}
+		<div class="d-flex justify-content-end">
+			<span class="navbar-text">
+				{{ user.username }}
+			</span>
+			<a class="navbar-text" href="{% url 'user:logout' %}" style="margin-left: 10px;">
+				<i class="fa-solid fa-right-from-bracket"></i>
+			</a>
+		</div>
+		{% else %}
+		<div class="d-flex justify-content-end">
+			<a href="{% url 'user:login' %}" class="btn btn-outline-light">Login</a>
+		</div>
+		{% endif %}
 	</nav>
 	{% block body_content %}
 	{% endblock body_content %}
