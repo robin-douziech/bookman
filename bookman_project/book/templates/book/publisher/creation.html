@@ -2,18 +2,22 @@
 
 {% load static %}
 
-{% block book_extra_headers %}
-	<link rel="stylesheet" type="text/css" href="{% static 'book/publisher/creation.css' %}">
+{% block tab_title %}
+- Publisher Creation
 {% endblock %}
 
 {% block title %}
-Registration of a new publisher
+Registration of a new Publisher
 {% endblock %}
 
-{% block form %}
-	<form action="" method="post">
-		{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" class="btn btn-primary" value="Submit">
-	</form>
-{% endblock %}
+{% block form_heading %}
+Register a Publisher
+{% endblock form_heading %}
+
+{% block form_content %}
+<form action="" method="post">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" class="btn btn-primary" value="Submit">
+</form>
+{% endblock form_content %}

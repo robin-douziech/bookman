@@ -2,18 +2,22 @@
 
 {% load static %}
 
-{% block book_extra_headers %}
-	<link rel="stylesheet" type="text/css" href="{% static 'book/creation.css' %}">
+{% block tab_title %}
+- Book Creation
 {% endblock %}
 
 {% block title %}
-Registration of a new Book
-{% endblock %}
+Create a book
+{% endblock title %}
 
-{% block form %}
-	<form action="" method="post" enctype="multipart/form-data">
-		{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" class="btn btn-primary" value="Submit">
-	</form>
-{% endblock %}
+{% block form_heading %}
+Register a book
+{% endblock form_heading %}
+
+{% block form_content %}
+<form action="" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" class="btn btn-primary" value="Submit">
+</form>
+{% endblock form_content %}

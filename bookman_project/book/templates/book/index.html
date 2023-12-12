@@ -3,24 +3,36 @@
 {% load static %}
 
 {% block book_extra_headers %}
-	<link rel="stylesheet" type="text/css" href="{% static 'book/index.css' %}">
 {% endblock %}
+{% block title %}
+Bookman
+{% endblock title %}
 
-{% block foreground %}
-	<div class="foreground__heading"><h1>Book search</h1></div>
-	<div class="foreground__content">
-		<div class="search_bar">
-			<form action="" method="get">
-				{% csrf_token %}
-				{{ form.search_txt }}
-				<input type="submit" value="Search">
-			</form>
-		</div>
-		{% for book in results %}
+{% block navbar_content %}
+<div class="d-flex justify-content-end">
+	<a href="{% url 'user:login' %}" class="btn btn-outline-light">Login</a>
+</div>
+{% endblock navbar_content %}
+
+{% block body_content %}
+<form action="" method="get" class="d-flex" role="search" style="margin-left: 5px;">
+	{% csrf_token %}
+	{{ form.search_txt }}
+	<input type="submit" value="Search" class="btn btn-outline-success" style="margin-left: 10px;">
+</form>
+<div class="row" style="margin: 15px;">
+	{% for book in results %}
+	<div class="col-sm-4" style="width: fit-content; height: fit-content;">
+		<div class="card mb-4" style="width: 300px; height: 450px;">
 			<a href="{% url 'book:details' %}?id={{book.id}}">
-				<img src="{{ book.front_cover.url }}">
-				<p>{{ book.title }}</p>
+				<img class="card-img-top img-fluid" src="{{ book.front_cover.url }}"
+					style="object-fit: cover; height: 70%;">
+				<div class="card-body">
+					<p class="card-text">{{ book.title }}</p>
+				</div>
 			</a>
-		{% endfor %}
+		</div>
 	</div>
-{% endblock %}
+	{% endfor %}
+</div>
+{% endblock body_content %}
