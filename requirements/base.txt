@@ -3,3 +3,4 @@ Django==4.2.7
 python-dotenv==1.0.0
 sqlparse==0.4.4
 typing_extensions==4.8.0
+pillow==10.1.0
