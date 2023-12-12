@@ -2,70 +2,89 @@ from django import forms
 
 from . import models
 
-class BookSearchForm(forms.Form) :
 
-	search_txt = forms.CharField(
-		label = "Search text",
-		max_length = 50,
-		required = False
-	)
+class BookSearchForm(forms.Form):
 
-	def __init__(self, request, *args, **kwargs) :
-		super(BookSearchForm, self).__init__(*args, **kwargs)
-		self.fields['search_txt'].initial = request.GET.get('search', '')
+    search_txt = forms.CharField(
+        label="Search text",
+        max_length=50,
+        required=False
+    )
 
-class AuthorCreationForm(forms.Form) :
+    def __init__(self, request, *args, **kwargs):
+        super(BookSearchForm, self).__init__(*args, **kwargs)
+        self.fields['search_txt'].initial = request.GET.get('search', '')
 
-	first_name = forms.CharField(
-		label = "First name",
-		max_length = 20
-	)
 
-	last_name = forms.CharField(
-		label = "Last name",
-		max_length = 20
-	)
+class AuthorCreationForm(forms.Form):
 
-class PublisherCreationForm(forms.Form) :
+    first_name = forms.CharField(
+        label="First name",
+        max_length=20,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Enter first name'})
+    )
 
-	name = forms.CharField(
-		label = "Name",
-		max_length = 50
-	)
+    last_name = forms.CharField(
+        label="Last name",
+        max_length=20,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Enter last name'})
+    )
 
-class GenreCreationForm(forms.Form) :
 
-	name = forms.CharField(
-		label = "Name",
-		max_length = 50
-	)
+class PublisherCreationForm(forms.Form):
 
-class BookCreationForm(forms.Form) :
+    name = forms.CharField(
+        label="Name",
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Enter publisher name'})
+    )
 
-	title = forms.CharField(
-		label = "Title",
-		max_length = 50
-	)
 
-	author = forms.ModelChoiceField(
-		label = "Author",
-		queryset = models.Author.objects.all()
-	)
+class GenreCreationForm(forms.Form):
 
-	publisher = forms.ModelChoiceField(
-		label = "Publisher",
-		queryset = models.Publisher.objects.all()
-	)
+    name = forms.CharField(
+        label="Name",
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Enter genre name'})
+    )
 
-	genre = forms.ModelChoiceField(
-		label = "Genre",
-		queryset = models.Genre.objects.all()
-	)
 
-	front_cover = forms.ImageField(
-		label = "Front cover"
-	)
+class BookCreationForm(forms.Form):
+    title = forms.CharField(
+        label="Title",
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Enter title'})
+    )
 
-	back_cover = forms.ImageField(
-		label = "Back cover"
-	)
+    author = forms.ModelChoiceField(
+        label="Author",
+        queryset=models.Author.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    publisher = forms.ModelChoiceField(
+        label="Publisher",
+        queryset=models.Publisher.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    genre = forms.ModelChoiceField(
+        label="Genre",
+        queryset=models.Genre.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    front_cover = forms.ImageField(
+        label="Front cover",
+        widget=forms.FileInput(attrs={'class': 'form-control-file'})
+    )
+
+    back_cover = forms.ImageField(
+        label="Back cover",
+        widget=forms.FileInput(attrs={'class': 'form-control-file'})
+    )
