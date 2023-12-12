@@ -1,0 +1,26 @@
+{% extends 'book/base.html' %}
+
+{% load static %}
+
+{% block book_extra_headers %}
+	<link rel="stylesheet" type="text/css" href="{% static 'book/index.css' %}">
+{% endblock %}
+
+{% block foreground %}
+	<div class="foreground__heading"><h1>Book search</h1></div>
+	<div class="foreground__content">
+		<div class="search_bar">
+			<form action="" method="get">
+				{% csrf_token %}
+				{{ form.search_txt }}
+				<input type="submit" value="Search">
+			</form>
+		</div>
+		{% for book in results %}
+			<a href="{% url 'book:details' %}?id={{book.id}}">
+				<img src="{{ book.front_cover.url }}">
+				<p>{{ book.title }}</p>
+			</a>
+		{% endfor %}
+	</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html>
+	<head>
+		<title>Book Manager</title>
+		<link rel="stylesheet" type="text/css" href="{% static 'book/form.css' %}">
+		{% block book_extra_headers %}{% endblock %}
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<div class="page">
+			<div class="foreground">
+				<div class="foreground__heading"><h1>{% block title %}{% endblock %}</h1></div>
+				<div class="foreground__content">
+					{% block form %}{% endblock %}
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,19 @@
+{% extends 'book/form.html' %}
+
+{% load static %}
+
+{% block book_extra_headers %}
+	<link rel="stylesheet" type="text/css" href="{% static 'book/author/creation.css' %}">
+{% endblock %}
+
+{% block title %}
+Registration of a new author
+{% endblock %}
+
+{% block form %}
+	<form action="" method="post">
+		{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="btn btn-primary" value="Submit">
+	</form>
+{% endblock %}
