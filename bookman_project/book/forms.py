@@ -22,14 +22,27 @@ class BookSearchForm(forms.Form):
 
 class AuthorCreationForm(forms.Form):
 
+    def as_p(self):
+        "Returns this form rendered as HTML <p>s."
+        return self._html_output(
+            normal_row='<p%(html_class_attr)s>%(field)s%(help_text)s</p>',
+            error_row='<div class="alert alert-danger" role="alert">%s</div>',
+            row_ender='</p>',
+            help_text_html=' <span class="helptext">%s</span>',
+            errors_on_separate_row=False)
+
     first_name = forms.CharField(
         label="First name",
-        max_length=20
+        max_length=20,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Enter first name'})
     )
 
     last_name = forms.CharField(
         label="Last name",
-        max_length=20
+        max_length=20,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Enter last name'})
     )
 
     def clean(self):
@@ -46,9 +59,20 @@ class AuthorCreationForm(forms.Form):
 
 class PublisherCreationForm(forms.Form):
 
+    def as_p(self):
+        "Returns this form rendered as HTML <p>s."
+        return self._html_output(
+            normal_row='<p%(html_class_attr)s>%(field)s%(help_text)s</p>',
+            error_row='<div class="alert alert-danger" role="alert">%s</div>',
+            row_ender='</p>',
+            help_text_html=' <span class="helptext">%s</span>',
+            errors_on_separate_row=False)
+
     name = forms.CharField(
         label="Name",
-        max_length=50
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Enter publisher name'})
     )
 
     def clean(self):
@@ -64,9 +88,20 @@ class PublisherCreationForm(forms.Form):
 
 class GenreCreationForm(forms.Form):
 
+    def as_p(self):
+        "Returns this form rendered as HTML <p>s."
+        return self._html_output(
+            normal_row='<p%(html_class_attr)s>%(field)s%(help_text)s</p>',
+            error_row='<div class="alert alert-danger" role="alert">%s</div>',
+            row_ender='</p>',
+            help_text_html=' <span class="helptext">%s</span>',
+            errors_on_separate_row=False)
+
     name = forms.CharField(
         label="Name",
-        max_length=50
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Enter genre name'})
     )
 
     def clean(self):
@@ -82,24 +117,38 @@ class GenreCreationForm(forms.Form):
 
 class BookCreationForm(forms.Form):
 
+    def as_p(self):
+        "Returns this form rendered as HTML <p>s."
+        return self._html_output(
+            normal_row='<p%(html_class_attr)s>%(field)s%(help_text)s</p>',
+            error_row='<div class="alert alert-danger" role="alert">%s</div>',
+            row_ender='</p>',
+            help_text_html=' <span class="helptext">%s</span>',
+            errors_on_separate_row=False)
+
     title = forms.CharField(
         label="Title",
-        max_length=50
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Enter title of the book'})
     )
 
     author = forms.ModelChoiceField(
         label="Author",
+        widget=forms.Select(attrs={'class': 'form-control'}),
         queryset=models.Author.objects.all()
     )
 
     publisher = forms.ModelChoiceField(
         label="Publisher",
+        widget=forms.Select(attrs={'class': 'form-control'}),
         queryset=models.Publisher.objects.all()
     )
 
     genre = forms.ModelChoiceField(
         label="Genre",
-        queryset=models.Genre.objects.all()
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        queryset=models.Genre.objects.all(),
     )
 
     front_cover = forms.ImageField(
