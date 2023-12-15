@@ -16,7 +16,8 @@ Bookman
 </div>
 <div class="row" style="margin: 15px;">
 	{% for book in results %}
-	<div class="col-sm-4" style="width: fit-content; height: fit-content;">
+	<div data-mdb-ripple-init data-mdb-ripple-color="light" class="col-sm-4"
+		style="width: fit-content; height: fit-content;">
 		<div class="card mb-4" style="width: 300px; height: 450px;">
 			<a href="{% url 'book:details' %}?id={{book.id}}">
 				<img class="card-img-top img-fluid" src="{{ book.front_cover.url }}"
