@@ -1,36 +1,39 @@
-{% extends 'user/form.html' %}
-
+{% extends "user/form.html" %}
 {% block tab_title %}
-- Login
+    - Login
 {% endblock tab_title %}
 {% block title %}
-Login
+    Login
 {% endblock title %}
 {% block form_heading %}
-Login
+    Login
 {% endblock form_heading %}
 {% block form_content %}
-<form style="width: 300px" method="post">
-	{% csrf_token %}
-	<div data-mdb-input-init class="form-outline mb-4">
-		<input type="text" id="form1Example1" class="form-control" name="{{ form.username.name }}" required />
-		<label class="form-label" for="form1Example1">{{ form.username.label }}</label>
-	</div>
-
-	<!-- Password input -->
-	<div data-mdb-input-init class="form-outline mb-4">
-		<input type="password" id="form1Example2" class="form-control" name="{{ form.password.name }}" required />
-		<label class="form-label" for="form1Example2">{{ form.password.label }}</label>
-	</div>
-	<!-- Register now link -->
-	<p>
-		Not a member?
-		<a href="{% url 'user:user_creation' %}">Register</a>
-	</p>
-
-	<!-- Submit button -->
-	<button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block">
-		Log In
-	</button>
-</form>
+    <form style="width: 300px" method="post">
+        {% csrf_token %}
+        <div data-mdb-input-init class="form-outline mb-4">
+            <input type="text"
+                   id="form1Example1"
+                   class="form-control"
+                   name="{{ form.username.name }}"
+                   required />
+            <label class="form-label" for="form1Example1">{{ form.username.label }}</label>
+        </div>
+        <!-- Password input -->
+        <div data-mdb-input-init class="form-outline mb-4">
+            <input type="password"
+                   id="form1Example2"
+                   class="form-control"
+                   name="{{ form.password.name }}"
+                   required />
+            <label class="form-label" for="form1Example2">{{ form.password.label }}</label>
+        </div>
+        <!-- Register now link -->
+        <p>
+            Not a member?
+            <a href="{% url 'user:user_creation' %}">Register</a>
+        </p>
+        <!-- Submit button -->
+        <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block">Log In</button>
+    </form>
 {% endblock form_content %}

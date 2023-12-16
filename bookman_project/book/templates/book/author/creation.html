@@ -1,23 +1,18 @@
-{% extends 'book/form.html' %}
-
+{% extends "book/form.html" %}
 {% load static %}
-
 {% block tab_title %}
-- Author Creation
-{% endblock %}
-
+    - Author Creation
+{% endblock tab_title %}
 {% block title %}
-Registration of a new author
-{% endblock %}
-
+    Registration of a new author
+{% endblock title %}
 {% block form_heading %}
-Register an Author
+    Register an Author
 {% endblock form_heading %}
-
 {% block form_content %}
-<form action="" method="post">
-	{% csrf_token %}
-	{{ form.as_p }}
-	<input type="submit" class="btn btn-primary" value="Submit">
-</form>
-{% endblock %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="btn btn-primary" value="Submit">
+    </form>
+{% endblock form_content %}

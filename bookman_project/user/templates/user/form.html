@@ -1,13 +1,18 @@
-{% extends 'user/base.html' %}
+{% extends "user/base.html" %}
 <!DOCTYPE html>
-
-{% block tab_title %}- Login{% endblock tab_title %}
-{% block title %}{% endblock title %}
+{% block tab_title %}
+    - Login
+{% endblock tab_title %}
+{% block title %}
+{% endblock title %}
 {% block body_content %}
-<div class="d-flex flex-column align-items-center justify-content-center" style="height: 100vh;">
-    <h2>{% block form_heading %}{% endblock form_heading %}</h2>
-    {% block form_content %}{% endblock form_content %}
-</div>
+    <div class="d-flex flex-column align-items-center justify-content-center"
+         style="height: 100vh">
+        <h2>
+            {% block form_heading %}
+            {% endblock form_heading %}
+        </h2>
+        {% block form_content %}
+        {% endblock form_content %}
+    </div>
 {% endblock body_content %}
-
-</html>
