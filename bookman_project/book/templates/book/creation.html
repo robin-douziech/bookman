@@ -1,0 +1,16 @@
+{% extends "book/form.html" %}
+{% load static %}
+{% block tab_title %}- Book Creation{% endblock tab_title %}
+{% block title %}
+    Create a book
+{% endblock title %}
+{% block form_heading %}
+    Register a book
+{% endblock form_heading %}
+{% block form_content %}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="btn btn-primary" value="Submit">
+    </form>
+{% endblock form_content %}

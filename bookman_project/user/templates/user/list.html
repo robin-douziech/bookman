@@ -1,0 +1,27 @@
+{% extends "user/base.html" %}
+{% load static %}
+{% block title %}
+    Search Users
+{% endblock title %}
+{% block navbar_content %}
+    <form class="d-flex input-group w-auto">
+        {% csrf_token %}
+        {{ form.search_txt }}
+        <input class="btn btn-primary"
+               style="margin-left: 10px"
+               type="submit"
+               value="Search">
+    </form>
+{% endblock navbar_content %}
+{% block body_content %}
+    <div class="container-sm d-flex justify-content-center align-items-center flex-column">
+        {% for person in results %}
+            <div class="card bg-light mb-3">
+                <a class="person"
+                   href="{% url 'user:details' %}?user={{ person.username }}">
+                    <p class="card-body">{{ person.username }}</p>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock body_content %}

@@ -1,0 +1,8 @@
+{% extends "user/base.html" %}
+{% block title %}
+    Details for {{ page_user.username }}
+{% endblock title %}
+{% block body_content %}
+    <p>username : {{ page_user.username }}</p>
+    <p>email : {{ page_user.email }}</p>
+{% endblock body_content %}

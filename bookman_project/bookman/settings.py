@@ -28,10 +28,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('TOKEN')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if ENVIRONMENT == "PRODUCTION" :
+if ENVIRONMENT == "PRODUCTION":
     DEBUG = False
     ALLOWED_HOSTS = ['127.0.0.1']
-else :
+else:
     DEBUG = True
     ALLOWED_HOSTS = []
 
@@ -64,7 +64,7 @@ ROOT_URLCONF = 'bookman.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,15 +128,15 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
-if ENVIRONMENT == "PRODUCTION" :
+if ENVIRONMENT == "PRODUCTION":
     STATIC_ROOT = '/var/www/html/7tadelles/static/'
-else :
+else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 
-if ENVIRONMENT == "PRODUCTION" :
+if ENVIRONMENT == "PRODUCTION":
     MEDIA_URL = "/media/"
     MEDIA_ROOT = '/var/www/html/bookman/media/'
-else :
+else:
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
