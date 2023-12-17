@@ -84,7 +84,9 @@ class UserSearchForm(forms.Form):
     search_txt = forms.CharField(
         label="Search text",
         max_length=50,
-        required=False
+        required=False,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control rounded', type: 'search', 'placeholder': 'Search Users', })
     )
 
     def __init__(self, request, *args, **kwargs):

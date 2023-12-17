@@ -1,19 +1,18 @@
-{% extends 'book/form.html' %}
-
+{% extends "book/form.html" %}
 {% load static %}
-
-{% block book_extra_headers %}
-	<link rel="stylesheet" type="text/css" href="{% static 'book/author/creation.css' %}">
-{% endblock %}
-
+{% block tab_title %}
+    - Author Creation
+{% endblock tab_title %}
 {% block title %}
-Registration of a new author
-{% endblock %}
-
-{% block form %}
-	<form action="" method="post">
-		{% csrf_token %}
+    Registration of a new author
+{% endblock title %}
+{% block form_heading %}
+    Register an Author
+{% endblock form_heading %}
+{% block form_content %}
+    <form action="" method="post">
+        {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" class="btn btn-primary" value="Submit">
-	</form>
-{% endblock %}
+    </form>
+{% endblock form_content %}
