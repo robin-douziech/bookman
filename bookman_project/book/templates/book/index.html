@@ -4,7 +4,7 @@
     Bookman
 {% endblock title %}
 {% block body_content %}
-    <div class="container" style="width: fit-content;">
+    <div class="container" style="width: fit-content; margin-bottom: 15px;">
         <form action=""
               method="get"
               class="d-flex"
@@ -18,24 +18,23 @@
                    style="margin-left: 10px">
         </form>
     </div>
-    <div class="row" style="margin: 15px;">
+    <div class="row g-4">
         {% for book in results %}
-            <div data-mdb-ripple-init
-                 data-mdb-ripple-color="light"
-                 class="col-sm-4"
-                 style="width: fit-content;
-                        height: fit-content">
-                <div class="card mb-4 shadow-4-strong" style="width: 300px; height: 450px">
-                    <a href="{% url 'book:details' %}?id={{ book.id }}">
-                        <img class="card-img-top img-fluid"
-                             src="{{ book.front_cover.url }}"
-                             style="object-fit: cover;
-                                    height: 70%"
-                             alt="front cover">
-                        <div class="card-body">
-                            <p class="card-text">{{ book.title }}</p>
-                        </div>
-                    </a>
+            <div class="col d-flex justify-content-center">
+                <div class="card text-center shadow-4-strong"
+                     style="width: 18rem;
+                            height: 25rem">
+                    <div class="bg-image hover-overlay"
+                         data-mdb-ripple-init
+                         data-mdb-ripple-color="light">
+                        <img src="{{ book.front_cover.url }}" class="img-fluid" alt="front cover" />
+                        <a href="{% url 'book:details' %}?id={{ book.id }}">
+                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ book.title }}</h5>
+                    </div>
                 </div>
             </div>
         {% endfor %}
