@@ -44,7 +44,6 @@ def user_creation(request):
 
 @login_required
 def details(request):
-
     username = request.GET.get('user', False)
     if username:
         try:
@@ -52,7 +51,12 @@ def details(request):
         except:
             user = None
         if user is not None and admin.UserAdmin(models.User, django_admin.site).has_view_permission(request, user):
-            return render(request, 'user/detail.html', {'page_user': user})
+            if request.method == 'POST':
+                book_id = request.POST.get('book_id')
+                book = models.Book.objects.get(id=book_id)
+                user.books.remove(book)
+            books = user.books.all()
+            return render(request, 'user/detail.html', {'page_user': user, 'books': books})
         else:
             return redirect('/')
     else:

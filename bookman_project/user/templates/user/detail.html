@@ -3,6 +3,31 @@
     Details for {{ page_user.username }}
 {% endblock title %}
 {% block body_content %}
-    <p>username : {{ page_user.username }}</p>
-    <p>email : {{ page_user.email }}</p>
+    <div class="d-flex flex-column align-items-center justify-content-center"
+         style="height: 100vh">
+        <h2>{{ page_user.username }}</h2>
+        <p>{{ page_user.email }}</p>
+        <h3>Books:</h3>
+        <div class="row g-4 m-0">
+            {% for book in books %}
+                <div class="col d-flex justify-content-center">
+                    <div class="card text-center shadow-4-strong"
+                         style="width: 18rem;
+                                height: 25rem">
+                        <div class="bg-image">
+                            <img src="{{ book.front_cover.url }}" class="img-fluid" alt="front cover" />
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ book.title }}</h5>
+                            <form method="post" action="">
+                                {% csrf_token %}
+                                <input type="hidden" name="book_id" value="{{ book.id }}">
+                                <button type="submit" class="btn btn-warning" data-mdb-ripple-init>Return</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock body_content %}
