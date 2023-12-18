@@ -16,7 +16,7 @@ def select_user(function):
                 user = None
         else :
             user = None
-        return function(request, select_user=user, *args, **kwargs)
+        return function(request, selected_user=user, *args, **kwargs)
     return wrapper
 
 def get_book(function):
