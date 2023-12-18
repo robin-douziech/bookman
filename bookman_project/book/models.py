@@ -1,4 +1,7 @@
 from django.db import models
+from django.core.validators import MinValueValidator
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 
 
 def front_cover_upload_to(instance, filename):
@@ -96,5 +99,22 @@ class Book(models.Model):
         blank=True
     )
 
+    nb_copies_owned = models.IntegerField(
+        verbose_name="Number of copies owned",
+        validators = [MinValueValidator(1)],
+        default = 1
+    )
+
+    nb_copies_available = models.IntegerField(
+        verbose_name="Number of copies available",
+        validators = [MinValueValidator(1)],
+        default = 1
+    )
+
     def __str__(self):
         return self.title
+
+@receiver(pre_save, sender=Book)
+def available_le_owned(sender, instance, **kwargs) :
+    if instance.nb_copies_available > instance.nb_copies_owned :
+        raise ValueError("There can't be more copies available than the number of copies owned by the library")
