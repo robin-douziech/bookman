@@ -1,0 +1,27 @@
+{% extends "book/base.html" %}
+{% block title %}
+    My Library
+{% endblock title %}
+{% block body_content %}
+    <div class="row g-4 m-0">
+        {% for book in books %}
+            <div class="col d-flex justify-content-center">
+                <div class="card text-center shadow-4-strong"
+                     style="width: 18rem;
+                            height: 25rem">
+                    <div class="bg-image hover-overlay"
+                         data-mdb-ripple-init
+                         data-mdb-ripple-color="light">
+                        <img src="{{ book.front_cover.url }}" class="img-fluid" alt="front cover" />
+                        <a href="{% url 'book:details' %}?id={{ book.id }}">
+                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ book.title }}</h5>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock body_content %}

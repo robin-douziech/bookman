@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+from user.models import User
+from .models import Book
 
 from . import models, forms
 
@@ -100,3 +102,29 @@ def book_creation(request):
             book.save()
             return redirect('/')
     return render(request, 'book/creation.html', {'form': form})
+
+
+@login_required
+def user_books_view(request):
+    books = request.user.books.all()
+    return render(request, 'book/user_books_view.html', {'books': books})
+
+
+@login_required
+@user_is_librarian
+def rent_book(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        book_id = request.POST.get('book_id')
+        user = User.objects.get(id=user_id)
+        book = Book.objects.get(id=book_id)
+        user.books.add(book)
+        book.check_availability()
+        details_url = reverse('book:details') + '?id=' + str(book.id)
+        return redirect(details_url)
+    else:
+        book_id = request.GET.get('book_id')
+        book = Book.objects.get(id=book_id)
+        book.check_availability()
+        users = User.objects.all()
+        return render(request, 'book/rent_book.html', {'book': book, 'users': users})
