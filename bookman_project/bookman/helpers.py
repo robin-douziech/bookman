@@ -8,7 +8,7 @@ def user_is_librarian(function):
 
 def select_user(function):
     def wrapper(request, *args, **kwargs):
-        if request.user.is_librarian :
+        if request.user.is_authenticated and request.user.is_librarian :
             try :
                 user_id = request.GET.get('select', False)
                 user = user_models.User.objects.get(pk=user_id)
