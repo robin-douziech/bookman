@@ -1,3 +1,7 @@
+from django.shortcuts import redirect
+from book import models as book_models
+from user import models as user_models
+
 def user_is_librarian(function):
     def wrapper(request, *args, **kwargs):
         if request.user.is_librarian:
@@ -24,7 +28,7 @@ def get_book(function):
         book_id = request.GET.get('id', False)
         if book_id :
             try :
-                book = models.Book.objects.get(pk=book_id)
+                book = book_models.Book.objects.get(pk=book_id)
                 return function(request, book=book, *args, **kwargs)
             except :
                 return redirect('/')
