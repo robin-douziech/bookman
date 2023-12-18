@@ -55,6 +55,7 @@ def details(request):
                 book_id = request.POST.get('book_id')
                 book = models.Book.objects.get(id=book_id)
                 user.books.remove(book)
+                book.check_availability()
             books = user.books.all()
             return render(request, 'user/detail.html', {'page_user': user, 'books': books})
         else:
