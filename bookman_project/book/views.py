@@ -93,6 +93,7 @@ def book_creation(request):
                 author=form.cleaned_data['author'],
                 publisher=form.cleaned_data['publisher'],
                 genre=form.cleaned_data['genre'],
+                copies_available=form.cleaned_data['copies_available'],
                 front_cover=None,
                 back_cover=None
             )
@@ -100,6 +101,7 @@ def book_creation(request):
             book.front_cover = form.cleaned_data['front_cover']
             book.back_cover = form.cleaned_data['back_cover']
             book.save()
+            book.check_availability()
             return redirect('/')
     return render(request, 'book/creation.html', {'form': form})
 

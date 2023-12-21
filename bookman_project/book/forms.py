@@ -151,6 +151,13 @@ class BookCreationForm(forms.Form):
         queryset=models.Genre.objects.all(),
     )
 
+    copies_available = forms.IntegerField(
+        label="Copies available",
+        widget=forms.NumberInput(attrs={'class': 'form-control'}),
+        initial=1,
+        min_value=0
+    )
+
     front_cover = forms.ImageField(
         label="Front cover"
     )
