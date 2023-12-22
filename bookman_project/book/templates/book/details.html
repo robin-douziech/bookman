@@ -9,6 +9,9 @@
 {% block body_content %}
     <div class="d-flex flex-column align-items-center justify-content-center"
          style="height: 100vh">
+        {% if book in user.books.all %}
+            <div class="alert alert-warning" role="alert">You already have this book in your <a href="{% url "book:user_books_view" %}">library</a>.</div>
+        {% endif %}
         {% if book.is_available %}
         {% else %}
             <div class="alert alert-danger" role="alert">This book is currently unavailable.</div>
