@@ -3,8 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from user.models import User
 from .models import Book
+from .orb_recognition import extract_descriptors, compare_descriptors
 
 from . import models, forms
+import pickle
+import cv2
+import numpy as np
 
 
 def user_is_librarian(function):
@@ -130,3 +134,47 @@ def rent_book(request):
         book.check_availability()
         users = User.objects.all()
         return render(request, 'book/rent_book.html', {'book': book, 'users': users})
+
+
+def recognition(request):
+    if request.method == 'POST':
+        # Get the uploaded image from the request
+        uploaded_image = request.FILES.get('image')
+
+        # Read the uploaded image using cv2
+        image = cv2.imdecode(np.frombuffer(
+            uploaded_image.read(), np.uint8), cv2.IMREAD_COLOR)
+
+        # Process the uploaded image to extract descriptors
+        descriptors = extract_descriptors(image)
+
+        # Loop through all the books in the database
+        books = Book.objects.all()
+        best_match_id = None
+        best_match_score = 0
+
+        for book in books:
+            # Load the pickled descriptors for front cover and back cover
+            front_cover_descriptors = pickle.loads(
+                book.descriptor_front)
+            back_cover_descriptors = pickle.loads(book.descriptor_back)
+
+            # Compare descriptors with both the front cover and back cover
+            front_cover_score = compare_descriptors(
+                descriptors, front_cover_descriptors)
+            back_cover_score = compare_descriptors(
+                descriptors, back_cover_descriptors)
+
+            # Store the best results book id in a variable
+            if front_cover_score > best_match_score:
+                best_match_id = book.id
+                best_match_score = front_cover_score
+            if back_cover_score > best_match_score:
+                best_match_id = book.id
+                best_match_score = back_cover_score
+
+        # Redirect to the details page of the best match
+        details_url = reverse('book:details') + '?id=' + str(best_match_id)
+        return redirect(details_url)
+    else:
+        return render(request, 'book/recognition.html')

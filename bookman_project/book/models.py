@@ -1,4 +1,7 @@
+import cv2
 from django.db import models
+from .orb_recognition import extract_descriptors
+from pickle import dumps
 
 
 def front_cover_upload_to(instance, filename):
@@ -57,6 +60,20 @@ class Genre(models.Model):
 
 class Book(models.Model):
 
+    def save(self, *args, **kwargs):
+        self.is_available = self.user_set.count() < self.copies_available
+        if self.front_cover and not self.descriptor_front:
+            self.create_descriptors()
+        super().save(*args, **kwargs)
+
+    def create_descriptors(self):
+        front_cover = cv2.imread(self.front_cover.path)
+        back_cover = cv2.imread(self.back_cover.path)
+        self.descriptor_front = dumps(
+            extract_descriptors(front_cover))
+        self.descriptor_back = dumps(
+            extract_descriptors(back_cover))
+
     title = models.CharField(
         verbose_name="Book title",
         max_length=50,
@@ -98,6 +115,8 @@ class Book(models.Model):
 
     copies_available = models.IntegerField(default=1)
     is_available = models.BooleanField(default=True)
+    descriptor_front = models.BinaryField(null=True, blank=True)
+    descriptor_back = models.BinaryField(null=True, blank=True)
 
     def check_availability(self):
         self.is_available = self.user_set.count() < self.copies_available

@@ -12,4 +12,5 @@ urlpatterns = [
     path("new-book", views.book_creation, name="book_creation"),
     path("my-books", views.user_books_view, name="user_books_view"),
     path('rent_book/', views.rent_book, name='rent_book'),
+    path('recognition/', views.recognition, name='recognition'),
 ]
