@@ -2,6 +2,7 @@ from django.contrib import admin as django_admin
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout, login
+from django.db.models import Q
 
 from . import forms, models, admin
 
@@ -71,7 +72,9 @@ def list(request):
         form = forms.UserSearchForm(request, request.GET)
         if form.is_valid():
             results = models.User.objects.filter(
-                username__contains=form.cleaned_data['search_txt'])
+                Q(username__contains=form.cleaned_data['search_txt']) |
+                Q(email__contains=form.cleaned_data['search_txt'])
+            )
         return render(request, 'user/list.html', {'form': form, 'results': results})
     else:
         return redirect('/')
