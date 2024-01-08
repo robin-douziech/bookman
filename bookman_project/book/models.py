@@ -98,6 +98,7 @@ class Book(models.Model):
 
     copies_available = models.IntegerField(default=1)
     is_available = models.BooleanField(default=True)
+    position = models.CharField(max_length=10, null=True, blank=True)
 
     def check_availability(self):
         self.is_available = self.user_set.count() < self.copies_available
