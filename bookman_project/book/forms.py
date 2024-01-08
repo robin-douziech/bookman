@@ -158,6 +158,13 @@ class BookCreationForm(forms.Form):
         min_value=0
     )
 
+    position = forms.CharField(
+        label="Position",
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Shelf, section, cell'})
+    )
+
     front_cover = forms.ImageField(
         label="Front cover"
     )

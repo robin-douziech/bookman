@@ -98,6 +98,7 @@ def book_creation(request):
                 publisher=form.cleaned_data['publisher'],
                 genre=form.cleaned_data['genre'],
                 copies_available=form.cleaned_data['copies_available'],
+                position=form.cleaned_data['position'],
                 front_cover=None,
                 back_cover=None
             )

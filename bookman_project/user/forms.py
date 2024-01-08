@@ -80,7 +80,6 @@ class UserCreationForm(forms.Form):
 
 
 class UserSearchForm(forms.Form):
-
     search_txt = forms.CharField(
         label="Search text",
         max_length=50,

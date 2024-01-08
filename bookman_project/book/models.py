@@ -117,6 +117,7 @@ class Book(models.Model):
     is_available = models.BooleanField(default=True)
     descriptor_front = models.BinaryField(null=True, blank=True)
     descriptor_back = models.BinaryField(null=True, blank=True)
+    position = models.CharField(max_length=10, null=True, blank=True)
 
     def check_availability(self):
         self.is_available = self.user_set.count() < self.copies_available
