@@ -1,5 +1,6 @@
 {% extends "book/base.html" %}
 {% block body_content %}
+    <h1>Book position => Shelf: {{ parsed_position.0 }}; Sector:{{ parsed_position.1 }}; Cell: {{ parsed_position.2 }}</h1>
     <h1>Rent out book</h1>
     <form method="post" action="">
         {% csrf_token %}

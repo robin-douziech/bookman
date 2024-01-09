@@ -4,6 +4,7 @@ from django.urls import reverse
 from user.models import User
 from .models import Book
 from .orb_recognition import extract_descriptors, compare_descriptors
+from django.contrib import messages
 
 from . import models, forms
 import pickle
@@ -133,7 +134,8 @@ def rent_book(request):
         book = Book.objects.get(id=book_id)
         book.check_availability()
         users = User.objects.all()
-        return render(request, 'book/rent_book.html', {'book': book, 'users': users})
+        parsed_position = book.position.split(',')
+        return render(request, 'book/rent_book.html', {'book': book, 'users': users, 'parsed_position': parsed_position})
 
 
 @login_required
@@ -152,7 +154,8 @@ def return_book(request):
         book = Book.objects.get(id=book_id)
         book.check_availability()
         users = User.objects.filter(books=book)
-        return render(request, 'book/return_book.html', {'book': book, 'users': users})
+        parsed_position = book.position.split(',')
+        return render(request, 'book/return_book.html', {'book': book, 'users': users, 'parsed_position': parsed_position})
 
 
 @login_required
