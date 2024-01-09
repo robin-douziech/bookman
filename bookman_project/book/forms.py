@@ -6,7 +6,6 @@ from . import models
 
 
 class BookSearchForm(forms.Form):
-
     search_txt = forms.CharField(
         label="Search text",
         max_length=50,
@@ -21,7 +20,6 @@ class BookSearchForm(forms.Form):
 
 
 class AuthorCreationForm(forms.Form):
-
     def as_p(self):
         "Returns this form rendered as HTML <p>s."
         return self._html_output(
@@ -58,7 +56,6 @@ class AuthorCreationForm(forms.Form):
 
 
 class PublisherCreationForm(forms.Form):
-
     def as_p(self):
         "Returns this form rendered as HTML <p>s."
         return self._html_output(
@@ -87,7 +84,6 @@ class PublisherCreationForm(forms.Form):
 
 
 class GenreCreationForm(forms.Form):
-
     def as_p(self):
         "Returns this form rendered as HTML <p>s."
         return self._html_output(
@@ -116,7 +112,6 @@ class GenreCreationForm(forms.Form):
 
 
 class BookCreationForm(forms.Form):
-
     def as_p(self):
         "Returns this form rendered as HTML <p>s."
         return self._html_output(

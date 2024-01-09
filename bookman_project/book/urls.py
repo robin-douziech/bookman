@@ -13,4 +13,6 @@ urlpatterns = [
     path("my-books", views.user_books_view, name="user_books_view"),
     path('rent_book/', views.rent_book, name='rent_book'),
     path('recognition/', views.recognition, name='recognition'),
+    path('manage/<int:book_id>/', views.manage_books, name='manage'),
+    path('return_book/', views.return_book, name='return_book'),
 ]

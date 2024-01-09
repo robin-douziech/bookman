@@ -127,8 +127,7 @@ def rent_book(request):
         book = Book.objects.get(id=book_id)
         user.books.add(book)
         book.check_availability()
-        details_url = reverse('book:details') + '?id=' + str(book.id)
-        return redirect(details_url)
+        return redirect('/')
     else:
         book_id = request.GET.get('book_id')
         book = Book.objects.get(id=book_id)
@@ -137,45 +136,63 @@ def rent_book(request):
         return render(request, 'book/rent_book.html', {'book': book, 'users': users})
 
 
+@login_required
+@user_is_librarian
+def return_book(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        book_id = request.POST.get('book_id')
+        user = User.objects.get(id=user_id)
+        book = Book.objects.get(id=book_id)
+        user.books.remove(book)
+        book.check_availability()
+        return redirect('/')
+    else:
+        book_id = request.GET.get('book_id')
+        book = Book.objects.get(id=book_id)
+        book.check_availability()
+        users = User.objects.filter(books=book)
+        return render(request, 'book/return_book.html', {'book': book, 'users': users})
+
+
+@login_required
+@user_is_librarian
 def recognition(request):
     if request.method == 'POST':
         # Get the uploaded image from the request
         uploaded_image = request.FILES.get('image')
-
         # Read the uploaded image using cv2
         image = cv2.imdecode(np.frombuffer(
             uploaded_image.read(), np.uint8), cv2.IMREAD_COLOR)
-
         # Process the uploaded image to extract descriptors
         descriptors = extract_descriptors(image)
-
         # Loop through all the books in the database
         books = Book.objects.all()
-        best_match_id = None
-        best_match_score = 0
-
+        matches = []
         for book in books:
             # Load the pickled descriptors for front cover and back cover
             front_cover_descriptors = pickle.loads(
                 book.descriptor_front)
             back_cover_descriptors = pickle.loads(book.descriptor_back)
-
             # Compare descriptors with both the front cover and back cover
             front_cover_score = compare_descriptors(
                 descriptors, front_cover_descriptors)
             back_cover_score = compare_descriptors(
                 descriptors, back_cover_descriptors)
-
-            # Store the best results book id in a variable
-            if front_cover_score > best_match_score:
-                best_match_id = book.id
-                best_match_score = front_cover_score
-            if back_cover_score > best_match_score:
-                best_match_id = book.id
-                best_match_score = back_cover_score
-
-        # Redirect to the details page of the best match
-        details_url = reverse('book:details') + '?id=' + str(best_match_id)
-        return redirect(details_url)
+            # Store the book and its best score in the matches list
+            best_score = max(front_cover_score, back_cover_score)
+            matches.append((book.id, best_score))
+        # Sort the matches by score in descending order and take the top 5
+        matches = [(Book.objects.get(id=match_id), score)
+                   for match_id, score in matches]
+        top_matches = sorted(matches, key=lambda x: x[1], reverse=True)[:5]
+        return render(request, 'book/search_result.html', {'matches': top_matches})
     else:
         return render(request, 'book/recognition.html')
+
+
+@login_required
+@user_is_librarian
+def manage_books(request, book_id):
+    book = Book.objects.get(id=book_id)
+    return render(request, 'book/manage.html', {'book': book})

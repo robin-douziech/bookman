@@ -1,0 +1,44 @@
+{% extends "book/base.html" %}
+{% block tab_title %}
+    - Manage Book
+{% endblock tab_title %}
+{% block title %}
+    Manage "{{ book.title }}"
+{% endblock title %}
+{% block body_content %}
+    <div class="d-flex flex-column align-items-center justify-content-center"
+         style="height: 100vh">
+        <div class="book text-center">
+            <img class="mb-3"
+                 src="{{ book.front_cover.url }}"
+                 style="width: 300px;
+                        height: 400px;
+                        object-fit: cover"
+                 alt="front cover">
+            <h1 class="mb-3">{{ book.title }}</h1>
+            <p class="mb-1">
+                <strong>Author:</strong> {{ book.author }}
+            </p>
+            <p class="mb-1">
+                <strong>Publisher:</strong> {{ book.publisher }}
+            </p>
+            <p class="mb-1">
+                <strong>Genre:</strong> {{ book.genre }}
+            </p>
+        </div>
+        <div class="d-flex justify-content-center">
+            {% if book.is_available %}
+                <form class="me-4" method="get" action="{% url 'book:rent_book' %}">
+                    <input type="hidden" name="book_id" value="{{ book.id }}">
+                    <button type="submit" class="btn btn-primary mr-2">Rent-out</button>
+                </form>
+            {% else %}
+                <button type="submit" class="btn btn-primary mr-2" disabled>Rent-out</button>
+            {% endif %}
+            <form method="get" action="{% url 'book:return_book' %}">
+                <input type="hidden" name="book_id" value="{{ book.id }}">
+                <button type="submit" class="btn btn-warning">Return</button>
+            </form>
+        </div>
+    </div>
+{% endblock body_content %}
