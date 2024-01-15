@@ -61,6 +61,7 @@ class Genre(models.Model):
 class Book(models.Model):
 
     def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
         self.is_available = self.user_set.count() < self.copies_available
         if self.front_cover and not self.descriptor_front:
             self.create_descriptors()
