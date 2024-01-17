@@ -31,7 +31,6 @@ def index(request):
 
 
 def details(request):
-
     book_id = request.GET.get('id', False)
     if book_id:
         try:
