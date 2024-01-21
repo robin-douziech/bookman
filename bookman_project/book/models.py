@@ -65,8 +65,10 @@ class Book(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         self.is_available = self.user_set.count() < self.copies_available
-        self.create_descriptors()
-        self.genereate_embeddings()
+        if self.front_cover and not self.descriptor_front:
+            self.create_descriptors()
+        if self.front_cover and not self.embed_front:
+            self.genereate_embeddings()
         super().save(*args, **kwargs)
 
     def create_descriptors(self):
