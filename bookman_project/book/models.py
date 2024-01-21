@@ -1,7 +1,9 @@
 import cv2
 from django.db import models
 from .orb_recognition import extract_descriptors
-from pickle import dumps
+from pickle import dumps, loads
+from PIL import Image
+from .nn_embeds import get_embedding
 
 
 def front_cover_upload_to(instance, filename):
@@ -65,6 +67,8 @@ class Book(models.Model):
         self.is_available = self.user_set.count() < self.copies_available
         if self.front_cover and not self.descriptor_front:
             self.create_descriptors()
+        if self.front_cover and not self.embed_front:
+            self.genereate_embeddings()
         super().save(*args, **kwargs)
 
     def create_descriptors(self):
@@ -118,7 +122,15 @@ class Book(models.Model):
     is_available = models.BooleanField(default=True)
     descriptor_front = models.BinaryField(null=True, blank=True)
     descriptor_back = models.BinaryField(null=True, blank=True)
+    embed_front = models.BinaryField(null=True, blank=True)
+    embed_back = models.BinaryField(null=True, blank=True)
     position = models.CharField(max_length=10, null=True, blank=True)
+
+    def genereate_embeddings(self):
+        front_cover = Image.open(self.front_cover.path)
+        back_cover = Image.open(self.back_cover.path)
+        self.embed_front = dumps(get_embedding(front_cover))
+        self.embed_back = dumps(get_embedding(back_cover))
 
     def check_availability(self):
         self.is_available = self.user_set.count() < self.copies_available

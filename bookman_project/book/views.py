@@ -10,6 +10,9 @@ from . import models, forms
 import pickle
 import cv2
 import numpy as np
+from PIL import Image
+from io import BytesIO
+from .nn_embeds import get_embedding, compare_embeddings
 
 
 def user_is_librarian(function):
@@ -161,14 +164,23 @@ def return_book(request):
 @user_is_librarian
 def recognition(request):
     if request.method == 'POST':
+
         # Get the uploaded image from the request
         uploaded_image = request.FILES.get('image')
+
         # Read the uploaded image using cv2
         image = cv2.imdecode(np.frombuffer(
             uploaded_image.read(), np.uint8), cv2.IMREAD_COLOR)
+
+        # PIL image for neural network
+        pil_image = Image.open(uploaded_image)
+
         # Process the uploaded image to extract descriptors
         descriptors = extract_descriptors(image)
-        # Loop through all the books in the database
+
+        # Get the embeddings for the uploaded image
+        embedding = get_embedding(pil_image)
+
         books = Book.objects.all()
         matches = []
         for book in books:
@@ -176,17 +188,42 @@ def recognition(request):
             front_cover_descriptors = pickle.loads(
                 book.descriptor_front)
             back_cover_descriptors = pickle.loads(book.descriptor_back)
+
             # Compare descriptors with both the front cover and back cover
+
             front_cover_score = compare_descriptors(
                 descriptors, front_cover_descriptors)
             back_cover_score = compare_descriptors(
                 descriptors, back_cover_descriptors)
+
+            # Load the pickled embeddings for front cover and back cover
+
+            front_cover_embedding = pickle.loads(book.embed_front)
+            back_cover_embedding = pickle.loads(book.embed_back)
+
+            # Compare embeddings with both the front cover and back cover
+
+            front_cover_nn_score = compare_embeddings(
+                embedding, front_cover_embedding)
+            back_cover_nn_score = compare_embeddings(
+                embedding, back_cover_embedding)
+
+            # Load embeddings for front cover and back cover
+
+            front_cover_embedding = pickle.loads(book.embed_front)
+            back_cover_embedding = pickle.loads(book.embed_back)
+
             # Store the book and its best score in the matches list
+
             best_score = max(front_cover_score, back_cover_score)
-            matches.append((book.id, best_score))
+            best_nn_score = round(
+                max(front_cover_nn_score, back_cover_nn_score) * 100, 2)
+            matches.append((book.id, best_score, best_nn_score))
+
         # Sort the matches by score in descending order and take the top 5
-        matches = [(Book.objects.get(id=match_id), score)
-                   for match_id, score in matches]
+
+        matches = [(Book.objects.get(id=match_id), orb_score, nn_score)
+                   for match_id, orb_score, nn_score in matches]
         top_matches = sorted(matches, key=lambda x: x[1], reverse=True)[:5]
         return render(request, 'book/search_result.html', {'matches': top_matches})
     else:
