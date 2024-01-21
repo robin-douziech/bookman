@@ -33,7 +33,7 @@
                     <button type="submit" class="btn btn-primary mr-2">Rent-out</button>
                 </form>
             {% else %}
-                <button type="submit" class="btn btn-primary mr-2" disabled>Rent-out</button>
+                <button type="submit" class="btn btn-primary me-4" disabled>Rent-out</button>
             {% endif %}
             <form method="get" action="{% url 'book:return_book' %}">
                 <input type="hidden" name="book_id" value="{{ book.id }}">
