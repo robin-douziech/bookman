@@ -95,4 +95,5 @@ The code can be found in this [Jupyter Notebook](https://colab.research.google.c
 Here's our test with 29 files simulating a cover database (some have back covers some do not, actual book number is 22. 11 files have not been queried. They have been added just for populating the database and to throw the search off. 11 books have been queried.)
 
 ![Results](images/octave-online-line-30.png)
+
 As we can see the accuracy with ORB is substantially better. This is because the model is trained on a dataset that is not really strongly related to our use case. Unfortunately there's no large dataset of book covers even more so those that have not just the front cover but also back cover. But overall the results are quite positive
