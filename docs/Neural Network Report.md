@@ -46,7 +46,7 @@ model = torch.nn.Sequential(*(list(model.children())[:-1]))
 
 Now we have a model that gives us the embeddings of an image that goes through the neural network
 
-Then we need to define the transforms, i.e how our image is gonna be pre-processed before going through out neural network. VGG has a specific set of transforms defined so we'll use that:
+Then we need to define the transforms, i.e how our image is gonna be pre-processed before going through our neural network. VGG has a specific set of transforms defined so we'll use that:
 
 ```python
 transform = transforms.Compose([
@@ -79,6 +79,7 @@ features = features.numpy()
 And here we get the features in a numpy array. We can then calculate the cosine similarity between two embeddings to see if they are more related or less related.
 
 ```python
+from sklearn.metrics.pairwise import cosine_similarity
 def compare_embeddings(embedding1, embedding2):
 	embedding1 = embedding1.reshape(1, -1)
 	embedding2 = embedding2.reshape(1, -1)
