@@ -115,7 +115,7 @@ class BookCreationForm(forms.Form):
     def as_p(self):
         "Returns this form rendered as HTML <p>s."
         return self._html_output(
-            normal_row='<p%(html_class_attr)s>%(field)s%(help_text)s</p>',
+            normal_row='<p%(html_class_attr)s>%(label)s%(field)s%(help_text)s</p>',
             error_row='<div class="alert alert-danger" role="alert">%s</div>',
             row_ender='</p>',
             help_text_html=' <span class="helptext">%s</span>',
