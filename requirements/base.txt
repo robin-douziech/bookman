@@ -7,3 +7,4 @@ pillow==10.1.0
 torch==2.1.2
 torchvision==0.16.2
 scikit-learn==1.4.0
+opencv-python==4.9.0.80
