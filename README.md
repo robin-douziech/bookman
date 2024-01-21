@@ -1,4 +1,4 @@
-<img src="docs/images/bookman.png" alt="logo" title="feishin" align="left" height="40" />
+<img src="docs/images/bookman.png" alt="logo" title="feishin" align="left" height="60" />
 
 # Bookman
 
