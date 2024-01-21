@@ -39,4 +39,15 @@
             </div>
         {% endfor %}
     </div>
+    {% if user.is_librarian %}
+        <button class="btn btn-floating btn-primary btn-lg"
+                style="position: fixed;
+                       bottom: 20px;
+                       right: 20px;
+                       z-index: 100">
+            <a href="{% url "book:recognition" %}">
+                <i class="fas fa-camera fa-2x text-white"></i>
+            </a>
+        </button>
+    {% endif %}
 {% endblock body_content %}

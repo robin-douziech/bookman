@@ -1,33 +1,33 @@
-{% extends "user/base.html" %}
+{% extends "book/base.html" %}
 {% block title %}
-    Details for {{ page_user.username }}
+    My Library
 {% endblock title %}
 {% block body_content %}
-    <div class="d-flex flex-column align-items-center justify-content-center"
-         style="height: 100vh">
-        <h2>{{ page_user.username }}</h2>
-        <p>{{ page_user.email }}</p>
-        <h3>Books:</h3>
+    {% if books %}
         <div class="row g-4 m-0">
             {% for book in books %}
                 <div class="col d-flex justify-content-center">
                     <div class="card text-center shadow-4-strong"
                          style="width: 18rem;
                                 height: 25rem">
-                        <div class="bg-image">
+                        <div class="bg-image hover-overlay"
+                             data-mdb-ripple-init
+                             data-mdb-ripple-color="light">
                             <img src="{{ book.front_cover.url }}" class="img-fluid" alt="front cover" />
+                            <a href="{% url 'book:details' %}?id={{ book.id }}">
+                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+                            </a>
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">{{ book.title }}</h5>
-                            <form method="post" action="">
-                                {% csrf_token %}
-                                <input type="hidden" name="book_id" value="{{ book.id }}">
-                                <button type="submit" class="btn btn-warning" data-mdb-ripple-init>Return</button>
-                            </form>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
-    </div>
+    {% else %}
+        <div>
+            <h1 class="text-center">No books in your Library</h1>
+        </div>
+    {% endif %}
 {% endblock body_content %}

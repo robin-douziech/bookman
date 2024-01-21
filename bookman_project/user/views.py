@@ -2,6 +2,7 @@ from django.contrib import admin as django_admin
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout, login
+from django.db.models import Q
 
 from . import forms, models, admin
 
@@ -44,7 +45,6 @@ def user_creation(request):
 
 @login_required
 def details(request):
-
     username = request.GET.get('user', False)
     if username:
         try:
@@ -52,7 +52,13 @@ def details(request):
         except:
             user = None
         if user is not None and admin.UserAdmin(models.User, django_admin.site).has_view_permission(request, user):
-            return render(request, 'user/detail.html', {'page_user': user})
+            if request.method == 'POST':
+                book_id = request.POST.get('book_id')
+                book = models.Book.objects.get(id=book_id)
+                user.books.remove(book)
+                book.check_availability()
+            books = user.books.all()
+            return render(request, 'user/detail.html', {'page_user': user, 'books': books})
         else:
             return redirect('/')
     else:
@@ -66,7 +72,9 @@ def list(request):
         form = forms.UserSearchForm(request, request.GET)
         if form.is_valid():
             results = models.User.objects.filter(
-                username__contains=form.cleaned_data['search_txt'])
+                Q(username__contains=form.cleaned_data['search_txt']) |
+                Q(email__contains=form.cleaned_data['search_txt'])
+            )
         return render(request, 'user/list.html', {'form': form, 'results': results})
     else:
         return redirect('/')

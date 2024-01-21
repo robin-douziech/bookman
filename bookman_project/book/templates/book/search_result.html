@@ -1,0 +1,35 @@
+{% extends "book/base.html" %}
+{% block tab_title %}
+    - Results for image search
+{% endblock tab_title %}
+{% block title %}
+    Results for image search
+{% endblock title %}
+{% block body_content %}
+    <div class="row g-4 m-0">
+        {% for match in matches %}
+            <div class="col d-flex justify-content-center">
+                <div class="card text-center shadow-4-strong"
+                     style="width: 18rem;
+                            height: 25rem">
+                    <div class="bg-image hover-overlay"
+                         data-mdb-ripple-init
+                         data-mdb-ripple-color="light">
+                        <img src="{{ match.0.front_cover.url }}"
+                             class="img-fluid"
+                             alt="front cover" />
+                        <a href="{% url 'book:manage' match.0.id %}">
+                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Score: {{ match.1 }}</h5>
+                        <h5 class="card-title">Neural Network Score: {{ match.2 }}</h5>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock body_content %}
+<img src="{{ match.0.front_cover.url }}" alt="Book cover">
+<p>Score: {{ match.1 }}</p>

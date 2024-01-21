@@ -6,7 +6,6 @@ from . import models
 
 
 class BookSearchForm(forms.Form):
-
     search_txt = forms.CharField(
         label="Search text",
         max_length=50,
@@ -21,7 +20,6 @@ class BookSearchForm(forms.Form):
 
 
 class AuthorCreationForm(forms.Form):
-
     def as_p(self):
         "Returns this form rendered as HTML <p>s."
         return self._html_output(
@@ -58,7 +56,6 @@ class AuthorCreationForm(forms.Form):
 
 
 class PublisherCreationForm(forms.Form):
-
     def as_p(self):
         "Returns this form rendered as HTML <p>s."
         return self._html_output(
@@ -87,7 +84,6 @@ class PublisherCreationForm(forms.Form):
 
 
 class GenreCreationForm(forms.Form):
-
     def as_p(self):
         "Returns this form rendered as HTML <p>s."
         return self._html_output(
@@ -116,7 +112,6 @@ class GenreCreationForm(forms.Form):
 
 
 class BookCreationForm(forms.Form):
-
     def as_p(self):
         "Returns this form rendered as HTML <p>s."
         return self._html_output(
@@ -149,6 +144,20 @@ class BookCreationForm(forms.Form):
         label="Genre",
         widget=forms.Select(attrs={'class': 'form-control'}),
         queryset=models.Genre.objects.all(),
+    )
+
+    copies_available = forms.IntegerField(
+        label="Copies available",
+        widget=forms.NumberInput(attrs={'class': 'form-control'}),
+        initial=1,
+        min_value=0
+    )
+
+    position = forms.CharField(
+        label="Position",
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Shelf, section, cell'})
     )
 
     front_cover = forms.ImageField(
