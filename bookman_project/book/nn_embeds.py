@@ -27,10 +27,9 @@ transform = transforms.Compose([
 def get_embedding(image):
     image = image.convert("RGB")
     image = transform(image)
-    image = image.unsqueeze(0)
     with torch.no_grad():
         embedding = model(image)
-    embedding = embedding.squeeze().numpy()
+    embedding = embedding.numpy()
     return embedding
 
 
