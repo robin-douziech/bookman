@@ -1,21 +1,13 @@
 {% extends "book/base.html" %}
 {% block tab_title %}
-    - {{ book.title }}
+    - Manage Book
 {% endblock tab_title %}
 {% block title %}
-    Details for: {{ book.title }} by {{ book.author }}
+    Manage "{{ book.title }}"
 {% endblock title %}
-{% load static %}
 {% block body_content %}
     <div class="d-flex flex-column align-items-center justify-content-center"
          style="height: 100vh">
-        {% if book in user.books.all %}
-            <div class="alert alert-warning" role="alert">You already have this book in your <a href="{% url "book:user_books_view" %}">library</a>.</div>
-        {% endif %}
-        {% if book.is_available %}
-        {% else %}
-            <div class="alert alert-danger" role="alert">This book is currently unavailable.</div>
-        {% endif %}
         <div class="book text-center">
             <img class="mb-3"
                  src="{{ book.front_cover.url }}"
@@ -34,15 +26,19 @@
                 <strong>Genre:</strong> {{ book.genre }}
             </p>
         </div>
-        {% if user.is_librarian %}
+        <div class="d-flex justify-content-center">
             {% if book.is_available %}
-                <form method="get" action="{% url 'book:rent_book' %}">
+                <form class="me-4" method="get" action="{% url 'book:rent_book' %}">
                     <input type="hidden" name="book_id" value="{{ book.id }}">
-                    <button type="submit" class="btn btn-primary">Rent-out</button>
+                    <button type="submit" class="btn btn-primary mr-2">Rent-out</button>
                 </form>
             {% else %}
-                <button type="submit" class="btn btn-primary" disabled>Rent-out</button>
+                <button type="submit" class="btn btn-primary me-4" disabled>Rent-out</button>
             {% endif %}
-        {% endif %}
+            <form method="get" action="{% url 'book:return_book' %}">
+                <input type="hidden" name="book_id" value="{{ book.id }}">
+                <button type="submit" class="btn btn-warning">Return</button>
+            </form>
+        </div>
     </div>
 {% endblock body_content %}
