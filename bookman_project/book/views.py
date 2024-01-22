@@ -41,7 +41,8 @@ def details(request):
         except:
             book = None
         if book is not None:
-            return render(request, 'book/details.html', {'book': book})
+            position = book.position.split(',')
+            return render(request, 'book/details.html', {'book': book, 'position': position})
     else:
         return redirect('/')
 
@@ -228,6 +229,32 @@ def recognition(request):
         return render(request, 'book/search_result.html', {'matches': top_matches})
     else:
         return render(request, 'book/recognition.html')
+
+
+@login_required
+@user_is_librarian
+def edit(request, book_id):
+    book = models.Book.objects.get(id=book_id)
+    form = forms.BookEditForm(request.POST or None,
+                              request.FILES or None, instance=book)
+
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    return render(request, 'book/edit.html', {'form': form, 'book': book})
+
+
+def delete(request):
+    book_id = request.GET.get('book_id')
+    if request.method == 'POST':
+        book = models.Book.objects.get(id=book_id)
+        book.delete()
+        return redirect('/')
+    else:
+        book = models.Book.objects.get(id=book_id)
+        return render(request, 'book/delete.html', {'book': book})
 
 
 @login_required

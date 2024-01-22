@@ -178,3 +178,32 @@ class BookCreationForm(forms.Form):
                     params={'book': title, 'author': author}
                 )
         return self.cleaned_data
+
+
+class BookEditForm(forms.ModelForm):
+    class Meta:
+        model = models.Book
+        fields = ['title', 'author', 'publisher', 'genre',
+                  'copies_available', 'position', 'front_cover', 'back_cover']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter title of the book'}),
+            'author': forms.Select(attrs={'class': 'form-control'}),
+            'publisher': forms.Select(attrs={'class': 'form-control'}),
+            'genre': forms.Select(attrs={'class': 'form-control'}),
+            'copies_available': forms.NumberInput(attrs={'class': 'form-control'}),
+            'position': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Shelf, section, cell'}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        title = cleaned_data.get('title')
+        author = cleaned_data.get('author')
+        if title and author:
+            existing_books = models.Book.objects.filter(
+                title=title, author=author).exclude(id=self.instance.id)
+            if existing_books.exists():
+                raise ValidationError(
+                    _("Book \"%(book)s\" by %(author)s already registered in database"),
+                    params={'book': title, 'author': author}
+                )
+        return cleaned_data

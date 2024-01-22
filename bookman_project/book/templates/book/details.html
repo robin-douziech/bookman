@@ -33,16 +33,28 @@
             <p class="mb-1">
                 <strong>Genre:</strong> {{ book.genre }}
             </p>
+            {% if user.is_librarian %}
+            <p class="mb-1">
+                <strong>Position:</strong> Shelf: {{ position.0 }}; Section: {{ position.1 }}; Cell: {{ position.2 }} 
+            </p>
+            {% endif %}
         </div>
         {% if user.is_librarian %}
             {% if book.is_available %}
                 <form method="get" action="{% url 'book:rent_book' %}">
                     <input type="hidden" name="book_id" value="{{ book.id }}">
-                    <button type="submit" class="btn btn-primary">Rent-out</button>
+                    <button type="submit" class="btn btn-primary mb-1">Rent-out</button>
                 </form>
             {% else %}
-                <button type="submit" class="btn btn-primary" disabled>Rent-out</button>
+                <button type="submit" class="btn btn-primary mb-1" disabled>Rent-out</button>
             {% endif %}
+            <form method="get" action="{% url 'book:edit' book.id %}">
+                <button type="submit" class="btn btn-warning mb-1">Edit</button>
+            </form>
+            <form method="get" action="{% url 'book:delete' %}">
+                <input type="hidden" name="book_id" value="{{ book.id }}">
+                <button type="submit" class="btn btn-danger mb-1">Delete</button>
+            </form>
         {% endif %}
     </div>
 {% endblock body_content %}
